@@ -10,3 +10,4 @@ node_modules
 # temporary files
 *.tmp
 *~
+*.log
