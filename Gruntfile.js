@@ -4,11 +4,13 @@
 // Tips: https://quickleft.com/blog/grunt-js-tips-tricks/
 
 module.exports = function(grunt) {
-    // Setup configuration...
+		// All of your Grunt code must be specified inside this function!
+		// Setup configuration...
     // Load tasks...
     // Define tasks...
 
     grunt.initConfig({
+			pkg: grunt.file.readJSON('package.json'),
 			browserify: {
 	       dist: {
 	         options: {
@@ -30,7 +32,14 @@ module.exports = function(grunt) {
             }
         },
 
-        uglify: {
+				uglify: {
+		      options: {
+		        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+		      },
+		      build: {
+		        src: 'src/<%= pkg.name %>.js',
+		        dest: 'build/<%= pkg.name %>.min.js'
+		      },
             scripts: {
                 expand: true,
                 cwd: 'scripts/',
