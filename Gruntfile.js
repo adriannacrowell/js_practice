@@ -11,6 +11,72 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
 			pkg: grunt.file.readJSON('package.json'),
+/*			jshint: {
+					scripts: {
+							src: ['scripts/**.js', 'lib/**.js']
+					},
+
+					tests: { // We can have more than one jshint task, this ones called `jshint:tests`
+							src: 'tests/**.js'
+					}
+			},
+*/
+
+		eslint: {
+				options: {
+						configFile: 'conf/eslint.json',
+						rulePaths: ['conf/rules']
+				},
+				target: ['file.js']
+		},
+
+			uglify: {
+				options: {
+					banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+				},
+				build: {
+					src: 'src/<%= pkg.name %>.js',
+					dest: 'build/<%= pkg.name %>.min.js'
+				},
+					scripts: {
+							expand: true,
+							cwd: 'scripts/',
+							src: '**.js',
+							dest: 'build/',
+							ext: '.min.js'
+					}
+			},
+
+			babel: {
+					 options: {
+							 sourceMap: true,
+							 stage: 0,
+							 optional: ['runtime'],
+					 		 presets: ['babel-preset-es2015']
+					 },
+					 dist: {
+							 files: [
+								 // Node source
+								 {
+								 expand: true,// Enable dynamic expansion.
+								 cwd: 'js_practice/',  // Src matches are relative to this path.
+								 src: ['es6/*.js'],
+								 dest: 'dist/-<%= grunt.template.today("yyyy-mm-dd") %>.js', // Destination path prefix. File will be copied to the dist directory with today’s data in the filename.
+							   ext: '.js',   // Dest filepaths will have this extension.
+						 },
+
+								 // Browser source
+								{
+									expand: true,// Enable dynamic expansion.
+									cwd: 'js_practice/',  // Src matches are relative to this path.
+									src: ['public/es6/*.js'],
+									dest: 'public/dist/-<%= grunt.template.today("yyyy-mm-dd") %>.js', // Destination path prefix. File will be copied to the dist directory with today’s data in the filename.
+									ext: '.js',   // Dest filepaths will have this extension.
+								},
+						],
+					},
+			 },
+/*
 			browserify: {
 	       dist: {
 	         options: {
@@ -21,47 +87,13 @@ module.exports = function(grunt) {
 	         }
 	       }
 			 },
-
-        jshint: {
-            scripts: {
-                src: ['scripts/**.js', 'lib/**.js']
-            },
-
-            tests: { // We can have more than one jshint task, this ones called `jshint:tests`
-                src: 'tests/**.js'
-            }
-        },
-
-				uglify: {
-		      options: {
-		        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-		      },
-		      build: {
-		        src: 'src/<%= pkg.name %>.js',
-		        dest: 'build/<%= pkg.name %>.min.js'
-		      },
-            scripts: {
-                expand: true,
-                cwd: 'scripts/',
-                src: '**.js',
-                dest: 'build/',
-                ext: '.min.js'
-            }
-        },
-
-        less: {
-            styles: {
-                files: {
-                    'build/styles/app.css': 'styles/app.less'
-                }
-            }
-        },
+*/
 
         watch: {
-            scripts: {
-                files: 'scripts/**.js',
-                task: 'jshint:scripts'
-            },
+					scripts: {
+				    files: ['**/*.js'],
+				    tasks: ['jshint'],
+						},
 
             styles: {
                 files: 'styles/**.less',
@@ -71,13 +103,15 @@ module.exports = function(grunt) {
 
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
+  /*  grunt.loadNpmTasks('grunt-contrib-jshint');*/
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
-		grunt.loadNpmTasks('grunt-browserify');
+	/*	grunt.loadNpmTasks('grunt-browserify');*/
+		grunt.loadNpmTasks('grunt-babel');
 
-    grunt.registerTask('default', ['browserify','jshint', 'less']);
-    grunt.registerTask('build', ['jshint', 'uglify', 'less']);
+  // Default task.
+    grunt.registerTask('default', ['babel']);
+    grunt.registerTask('build', [ 'uglify']);
 
 };

@@ -1,11 +1,17 @@
 {
-  "name": "bin",
+  "name": "js_practice",
   "version": "1.0.0",
   "description": "dev dependencies",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+
+	"repository": {
+  "type": "git",
+  "url": "https://github.com/amarie004/js_practice.git"
+},
+
   "keywords": [
     "dev",
     "ops"
@@ -13,6 +19,7 @@
   "author": "adrianna ck",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^1.1.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
@@ -21,6 +28,6 @@
     "grunt-babel": "^6.0.0",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^0.1.13",
-    "grunt-contrib-jshint": "^1.0.0"
+    "grunt-eslint": "^18.0.0"
   }
 }
